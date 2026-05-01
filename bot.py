@@ -1,10 +1,9 @@
 import os
 import requests
 
-BOT_TOKEN = os.environ["7964042596:AAERuaP19P5gpHdxNQxjVh-L9SCjYn6MGkU"]
-CHANNEL = os.environ["@slnews247"]
-
-NEWS_API = os.environ["fc1399b9a22944cca99206c268a68a06"]
+BOT_TOKEN = os.environ["BOT_TOKEN"]
+CHANNEL = os.environ["CHANNEL"]
+NEWS_API = os.environ["NEWS_API"]
 
 def get_news():
     res = requests.get(NEWS_API).json()
@@ -26,5 +25,4 @@ def send(msg):
         "text": msg
     })
 
-if __name__ == "__main__":
-    send(get_news())
+send(get_news())
