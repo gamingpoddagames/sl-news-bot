@@ -1,35 +1,31 @@
 import requests
-import time
 
-BOT_TOKEN = "7964042596:AAERuaP19P5gpHdxNQxjVh-L9SCjYn6MGkU"
-CHANNEL_ID = "8376417027"
+BOT_TOKEN = "PASTE_YOUR_BOT_TOKEN"
+CHANNEL_USERNAME = "@newssl247_bot"
 
-NEWS_API = "https://newsapi.org/v2/top-headlines?country=us&apiKey=fc1399b9a22944cca99206c268a68a06"
+NEWS_API = "https://newsapi.org/v2/top-headlines?country=us&apiKey=YOUR_NEWS_API_KEY"
 
 def get_news():
-    try:
-        res = requests.get(NEWS_API).json()
-        articles = res.get("articles", [])[:5]
+    res = requests.get(NEWS_API).json()
+    articles = res.get("articles", [])[:5]
 
-        messages = []
-        for a in articles:
-            title = a["title"]
-            url = a["url"]
-            messages.append(f"🚨 {title}\n{url}")
+    message = "🚨 *SL BREAKING NEWS 24/7*\n\n"
 
-        return "\n\n".join(messages)
-    except:
-        return "No news available right now."
+    for a in articles:
+        title = a.get("title", "No title")
+        url = a.get("url", "")
+        message += f"• {title}\n{url}\n\n"
 
-def send_telegram(message):
+    return message
+
+def send(msg):
     url = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
     data = {
-        "chat_id": CHANNEL_ID,
-        "text": message
+        "chat_id": CHANNEL_USERNAME,
+        "text": msg,
+        "parse_mode": "Markdown"
     }
     requests.post(url, data=data)
 
-while True:
-    news = get_news()
-    send_telegram(news)
-    time.sleep(3600)  # 1 hour
+if __name__ == "__main__":
+    send(get_news())
