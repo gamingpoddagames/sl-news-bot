@@ -1,17 +1,10 @@
-def get_news():
-    try:
-        if not NEWS_API.startswith("http"):
-            return "⚠️ NEWS API not configured properly"
+import os
+import requests
 
-        res = requests.get(NEWS_API).json()
-        articles = res.get("articles", [])[:5]
+NEWS_API = os.environ["NEWS_API"]
 
-        msg = "🚨 SL BREAKING NEWS 24/7\n\n"
+print("NEWS API:", NEWS_API)
 
-        for a in articles:
-            msg += f"• {a.get('title')}\n{a.get('url')}\n\n"
-
-        return msg
-
-    except Exception as e:
-        return f"Error fetching news: {str(e)}"
+res = requests.get(NEWS_API)
+print("STATUS:", res.status_code)
+print("RESPONSE:", res.text[:500])
