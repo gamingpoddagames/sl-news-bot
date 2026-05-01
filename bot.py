@@ -1,10 +1,11 @@
-import os
-import requests
+import feedparser
 
-NEWS_API = os.environ["NEWS_API"]
+def get_news():
+    feed = feedparser.parse("https://feeds.bbci.co.uk/news/world/rss.xml")
 
-print("NEWS API:", NEWS_API)
+    msg = "🚨 SL BREAKING NEWS 24/7\n\n"
 
-res = requests.get(NEWS_API)
-print("STATUS:", res.status_code)
-print("RESPONSE:", res.text[:500])
+    for entry in feed.entries[:5]:
+        msg += f"• {entry.title}\n{entry.link}\n\n"
+
+    return msg
